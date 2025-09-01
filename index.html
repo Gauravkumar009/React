@@ -7,24 +7,10 @@
     <title>Namaste React</title>
   </head>
   <body>
-    <div id="root"></div>
-    <!-- <script>
-        const heading = document.createElement("h1");
-        heading.innerHTML = "Hello World from JavaScript!";
+    <!-- ✅ Empty container -->
+    <div id="root"><h1>Not Render!</h1></div>
 
-        const root = document.getElementById("Root");
-        root.appendChild(heading);
-    </script> -->
-
-    <script
-      crossorigin
-      src="https://unpkg.com/react@18/umd/react.production.min.js"
-    ></script>
-    <script
-      crossorigin
-      src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"
-    ></script>
-
-    <script src="./App.js"></script>
+    <!-- ✅ Import entry file (index.js), not App.js -->
+    <script type="module" src="./App.js"></script>
   </body>
 </html>
