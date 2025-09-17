@@ -1,28 +1,62 @@
-import React, { useEffect, useState } from 'react'
-import RestaurantCart from './RestaurantCart.js';
-import reslist from '../utils/mockData.js';
-
+import React, { useEffect, useState } from "react";
+import RestaurantCart from "./RestaurantCart.js";
+import Shimmer from "./Shimmer.js";
 
 const Body = () => {
-    // loacl variable - super powerful variable
-    
-    let [listOfRestaurants, setListOfRestaurants] = useState(reslist);
-    return (
-        <div className="body">
-            <div className="filter">
-                <button className="filter-btn" onClick={() => {
-                    listOfRestaurants = listOfRestaurants.filter((res) => res.info.avgRating > 4.5);
-                    setListOfRestaurants([...listOfRestaurants]);
-                    console.log(listOfRestaurants);
-                }}>Top Rated Restaurants</button>
-            </div>
-            <div className="res-container">
-                {
-                    listOfRestaurants.map((restaurant) => (<RestaurantCart resData={restaurant} key={restaurant.info.id} />))
-                }
-            </div>
-        </div>
+  const [listOfRestaurants, setListOfRestaurants] = useState([]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(
+        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9351929&lng=77.62448069999999&page_type=DESKTOP_WEB_LISTING"
+      );
+      const json = await res.json();
+      console.log("Full API response:", json);
+      const restaurants =
+        json?.data?.cards
+          ?.flatMap(
+            (c) =>
+              c?.card?.card?.gridElements?.infoWithStyle?.restaurants || []
+          )
+          .map((r) => ({ info: r.info })) || [];
+
+      setListOfRestaurants(restaurants);
+    } catch (err) {
+      console.error("Error fetching restaurants:", err);
+    }
+  };
+
+  if(listOfRestaurants.length === 0){
+    return <Shimmer />;
+  }
+  const filterTopRated = () => {
+    setListOfRestaurants((prev) =>
+      prev.filter((res) => Number(res.info?.avgRating) > 4.4)
     );
-}
+  };
+
+  return (
+    <div className="body">
+      <div className="filter">
+        <button className="filter-btn" onClick={filterTopRated}>
+          Top Rated Restaurants
+        </button>
+      </div>
+
+      <div className="res-container">
+        {listOfRestaurants.map((restaurant, idx) => (
+          <RestaurantCart
+            key={`${restaurant.info?.id || "noid"}-${idx}`}
+            resData={restaurant}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Body
