@@ -5,6 +5,10 @@ import Shimmer from "./Shimmer.js";
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
 
+  const [searchText, setSearchText] = useState("");
+
+  console.log("Body Rendered");
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -29,22 +33,24 @@ const Body = () => {
       console.error("Error fetching restaurants:", err);
     }
   };
-
-  if(listOfRestaurants.length === 0){
-    return <Shimmer />;
-  }
   const filterTopRated = () => {
     setListOfRestaurants((prev) =>
       prev.filter((res) => Number(res.info?.avgRating) > 4.4)
     );
   };
 
-  return (
+  return listOfRestaurants.length === 0 ? <Shimmer /> : (
     <div className="body">
       <div className="filter">
-        <button className="filter-btn" onClick={filterTopRated}>
+        <div className="search">
+          <input type="text" className="search-box" value={searchText} placeholder="Search" onChange={(e) =>{setSearchText(e.target.value)}}/>
+          <button className="search-btn" onChange={(e) =>{
+            setSearchText(e.target.value);
+          }}>Search</button>
+          <button className="filter-btn" onClick={filterTopRated}>
           Top Rated Restaurants
         </button>
+        </div>
       </div>
 
       <div className="res-container">
