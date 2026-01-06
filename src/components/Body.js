@@ -43,13 +43,13 @@ const Body = () => {
     <div className="body">
       <div className="filter">
         <div className="search">
-          <input type="text" className="search-box" value={searchText} placeholder="Search" onChange={(e) =>{setSearchText(e.target.value)}}/>
-          <button className="search-btn" onChange={(e) =>{
+          <input type="text" className="search-box" value={searchText} placeholder="Search" onChange={(e) => { setSearchText(e.target.value) }} />
+          <button className="search-btn" onChange={(e) => {
             setSearchText(e.target.value);
           }}>Search</button>
           <button className="filter-btn" onClick={filterTopRated}>
-          Top Rated Restaurants
-        </button>
+            Top Rated Restaurants
+          </button>
         </div>
       </div>
 
