@@ -61,7 +61,7 @@ const Body = () => {
           />
         ))}
       </div>
-    </div>
+    </div>   
   );
 };
 
